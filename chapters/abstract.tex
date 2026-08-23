@@ -1,0 +1,41 @@
+% ==========================================================================
+% ABSTRACT
+%
+% EEE requirement: maximum 200 words, on a single page.
+% Written as ONE flowing paragraph answering: problem/objective, why it
+% matters, methods, key results (quantitative), and implications.
+% ==========================================================================
+
+\prelimchapter{Abstract}
+
+Cardiovascular diseases are among the leading causes of death worldwide,
+and timely detection of cardiac arrhythmias from the electrocardiogram
+(ECG) is essential to prevent life-threatening complications. Manual ECG
+interpretation is time-consuming, requires expert cardiologists, and is
+vulnerable to inter-observer variability, which motivates automated
+computer-aided classification. This thesis develops and compares two
+deep-learning architectures for ECG beat classification: a hybrid
+CNN--BiLSTM model with temporal additive attention, and a lightweight
+multi-scale feature-augmented network (MSFT-Net) with squeeze-and-excitation
+gating and FiLM conditioning. Both models classify the five ANSI/AAMI EC57
+beat classes (N, S, V, F, Q) from one-second R-peak-centred windows combined
+with rhythm, morphological, and template-similarity features under a
+record-disjoint, inter-patient evaluation protocol, together with a
+permissive intra-patient six-category ECG comparison that additionally
+includes a CHF-derived clinical-condition category. Under the inter-patient
+protocol, MSFT-Net achieved 89.45\% accuracy and 87.25\% macro-F1 with
+167{,}090 parameters, outperforming the larger recurrent hybrid (82.00\%
+accuracy, 73.26\% macro-F1), while the intra-patient protocol reached 98.59\%
+accuracy. The INT8-quantised MSFT-Net was deployed on an STM32
+microcontroller with 185.06~ms per-beat inference latency, demonstrating
+that accurate, explainable, inter-patient arrhythmia classification is
+feasible on resource-constrained wearable hardware.
+
+\vspace{18pt}
+
+\noindent
+\textbf{Keywords:} ECG, arrhythmia classification, deep learning,
+MSFT-Net, CNN--BiLSTM--attention, inter-patient evaluation, XAI, Grad-CAM,
+microcontroller deployment
+
+\clearpage

@@ -1,0 +1,185 @@
+% ==========================================================================
+% Chapter 4: Social and Environmental influences
+%
+% %: percentage required by the EEE 4000 manual (General Instruction 7d). Graded under
+% CO6/PO(f) (societal, health, safety, legal and cultural issues) and
+% CO7/PO(g) (environmental impacts/sustainability).
+% ==========================================================================
+
+\chapter{Social and Environmental Influence}
+\label{ch:social}
+
+This chapter discusses the broader social and environmental implications of
+the automated ECG arrhythmia classifier developed in this thesis. The work
+sits at the intersection of biomedical engineering, deep learning, and
+resource-constrained embedded systems, and its impact is therefore assessed
+along three axes: the people who use it or are monitored by it
+(Section~\ref{sec:societal}), the environment in which it is manufactured
+and operated (Section~\ref{sec:environment}), and the long-term
+sustainability of the solution (Section~\ref{sec:sustainability}).
+
+\section{Societal Impact}
+\label{sec:societal}
+
+The direct beneficiaries of this work are cardiac patients and the
+clinicians and caregivers who monitor them. The principal societal
+contribution is an automated, microcontroller-based approach to
+democratising arrhythmia screening: a small, wearable device that can
+deliver continuous monitoring at low cost to people who currently cannot
+afford it. In Bangladesh, cardiologists are concentrated in urban centres,
+so the patient-to-doctor ratio outside major cities is unfavourable and
+tertiary care is often unavailable. A device of this kind could change how
+dangerous arrhythmias, such as ventricular ectopy, are detected, moving
+detection from the hospital to the home, and catching conditions on the
+patient's own time rather than only during scheduled visits.
+
+\subsection{Financing and Health Effects}
+\label{subsec:financial_health}
+
+\textbf{Financial:} The proposed system is deliberately designed around
+low-cost components. The microcontroller used in this work, the STM32,
+costs only a few dollars, and the deployed model has a total footprint of
+approximately 288~KB of flash with no dependence on cloud infrastructure.
+The processing and inference cost is therefore a one-time hardware
+expense rather than a recurring data or servicing fee. By contrast, the
+conventional strategy of Holter monitoring followed by manual cardiologist
+review has been shown to cost considerably more per patient and does not
+scale to continuous monitoring of the general population. In the
+Bangladeshi context, where the cost of cardiac care is often a barrier, an
+affordable wearable monitor is one way to help address this problem. A
+classifier of this kind could ease the financial burden that arrhythmia
+places on patients, reducing the morbidity and mortality costs, as well
+as the costly hospitalisation for stroke and heart failure, that
+undetected arrhythmias can cause.
+
+\textbf{Health:} As a biomedical work, the primary impact on health is
+tied to classification performance, specifically, the class of missed
+beats and the clinical risk each represents. With a testing sensitivity
+of 92.79\% for the highest-risk class, and, as Section~\ref{subsec:ec57}
+shows, a false-positive rate of only 0.73\% of samples, the system results
+in fewer missed life-threatening beats. Early detection of atrial and
+other arrhythmic events, such as fibrillation-like episodes, can enable
+earlier treatment and help avoid strokes and sudden cardiac death. The
+device is non-invasive: it senses the ECG through skin electrodes only, so
+it exposes the patient to no ionising radiation and no physical risk
+beyond that of normal electrode placement. The main health considerations
+for extended wear are skin irritation from the electrodes and, as with any
+battery-operated wearable, thermal and chemical battery safety, both of
+which are addressed through the use of certified, low-power components.
+
+\subsection{Safety and Legal/Cultural Issues}
+\label{subsec:safety_legal_cultural}
+
+\textbf{Safety:} As a low-voltage, battery-powered system, the electrical
+hazards involved are small compared with mains-powered medical electronic
+equipment. The main hazards are data loss from a missed classification on
+an unattended monitor, and alarm fatigue, in which too many false alarms
+degrade the caregiver's ability to respond appropriately. Both are
+addressed in the design: the classifier is evaluated statistically using
+the false-positive rate per class (Section~\ref{subsec:ec57}), and the
+recall-floor analysis of Section~\ref{subsec:roc} quantifies the precision
+cost of any mandated detection rate, so that a clinician can select an
+operating point that bounds the false-alarm burden before the device is
+deployed.
+
+Were this system used as a medical decision-support device, it would need
+to comply with the relevant regulations governing complex computer
+programs used in patient care. The classification methodology is already
+designed to be compliant with the testing and reporting standards for
+cardiac rhythm algorithms~\cite{aami_ec57_2012}. Deployed as a regulated
+medical device in Bangladesh, it would need to obtain clearance from the
+Directorate General of Drug Administration (DGDA), whose guidelines are
+broadly similar to international frameworks such as the FDA and CE
+marking routes. Data protection is an additional consideration: although
+the model in this work was trained on de-identified public data from
+PhysioNet, a deployed wearable would handle identifiable patient
+information and must comply with the applicable data-protection regime,
+including informed consent and secure storage.
+
+\textbf{Cultural and ethical:} The most significant ethical
+consideration concerns the attribution maps generated by the model
+(Subsection~\ref{subsec:explain}). While plausible, these maps were not
+found to be reliably faithful under deletion-curve testing and should
+therefore be presented to clinicians as qualitative, supporting evidence
+rather than as causal explanations. An ethically sound deployment of the
+model should accordingly position it as a screening aid that keeps the
+cardiologist in the loop, rather than as an autonomous diagnostic tool.
+On equity, the device is low-cost, fully battery-powered, and operates
+entirely on-device, so it can be used without internet connectivity in
+rural or low-income settings, offering better equity of access than
+cloud-based alternatives. However, over-reliance on automated screening
+carries a real risk of reducing the number of trained ECG interpreters
+over the long run; the effects on the employment of ECG technicians
+should be monitored as such devices become more widespread.
+
+\section{Impact on Environment}
+\label{sec:environment}
+
+The full life cycle of the device should be considered when assessing its
+environmental impact.
+
+\textbf{Manufacturing:} The hardware (a board containing electrodes and
+a generic microcontroller) has a material footprint dominated by the
+printed circuit board, the battery, and the enclosure, all components
+whose manufacturing impact is well understood. The largest computational
+cost is incurred during model development: training the deep learning
+models required a number of GPU-hours. This cost is incurred only once,
+at design time, and is offset by the fact that the deployed system
+performs inference in short bursts only: the microcontroller draws power
+for 185~ms per beat classification (Section~\ref{subsec:mcu}) and idles in
+between, which is well suited to intermittent use in a battery-powered
+wearable.
+
+\textbf{Operation:} Compared with a policy of hospital-based monitoring,
+a wearable classifier that substitutes for Holter monitoring and routine
+hospital visits requires far less energy: low power draw, small size, and
+on-device computation replace the travel, hospital energy use, and
+clinician time associated with in-person monitoring. Every hospitalisation
+avoided also represents a saving in transportation fuel. The operating-phase
+footprint of the solution is consequently very low compared with the
+status quo, and its net effect on emissions is likely negative.
+
+\textbf{End of Life:} As an electronic device, the unit contributes to
+Bangladesh's growing e-waste problem, though a small, microcontroller-based
+wearable represents a smaller burden than larger hospital monitoring
+equipment. Both the device and its battery need to be recycled and
+disposed of through appropriate channels rather than household trash.
+Because the classifier is implemented in software, it can be updated to
+extend the device's useful life without requiring new hardware. The
+quantised INT8 model is also very compact, at 29.9~KB, allowing it to run
+for years on inexpensive, existing hardware, lowering the rate of
+device replacement and the resulting e-waste.
+
+\section{Sustainability Issues}
+\label{sec:sustainability}
+
+The sustainability of the solution rests on four factors. First,
+\emph{spare parts and maintenance}: the design is based on commodity
+microcontroller hardware that is readily available in Bangladesh, and
+because all logic resides in firmware, a failed unit can be replaced
+cheaply and patched locally rather than depending on a proprietary
+cloud-based service that could be discontinued. Second, \emph{service
+life}: the STM32 hardware platform has a long production lifecycle, and
+the software footprint is small enough that the model can be updated
+in place, allowing the device to remain in service for many years without
+requiring hardware changes. Third, \emph{scalability}: both the per-device
+cost and the per-inference energy consumption are low enough that the
+solution could scale from a single clinic pilot to population-level
+screening without a proportionate increase in running cost; the larger
+challenge to scaling is the clinical workforce available to follow up on
+screening results. Fourth, \emph{import dependence}: most of the core
+hardware, including the highest-value components, is imported, but the
+ability to train and deploy the model is a domestic capability, and it can
+be reproduced, retrained on local data, and improved without foreign
+supervision, which helps offset this dependence.
+
+This work also advances several United Nations Sustainable Development
+Goals. Its greatest contribution is to SDG~3 (Good Health and Well-being),
+through the goal of reducing premature mortality from non-communicable
+diseases such as cardiovascular disease by one third by 2030, which
+continuous, affordable, out-of-hospital arrhythmia screening directly
+supports. It also supports SDG~9 (Industry, Innovation and Infrastructure)
+by building embedded machine learning research and engineering capability
+in Bangladesh, and SDG~12 (Responsible Consumption and Production) by
+offering a small, long-lived, low-energy device as an alternative to
+disposable or energy-intensive equipment.

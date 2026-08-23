@@ -1,0 +1,374 @@
+% ==========================================================================
+% CHAPTER 1 -- INTRODUCTION
+% ==========================================================================
+
+\chapter{Introduction}
+\label{ch:introduction}
+
+Cardiovascular diseases (CVDs) continue to be a leading cause of death
+around the world. Among them, cardiac arrhythmias, irregularities of the
+heart rate caused by abnormal electrical signals in the heart, can lead to
+serious complications such as stroke, heart failure, and sudden cardiac
+arrest if they are not detected in time. This thesis develops a deep
+learning based computer-aided system for automated ECG arrhythmia
+classification and evaluates it under a clinically meaningful,
+record-disjoint protocol that is suitable for wearable, resource-constrained
+deployment.
+
+
+\section{Overview}
+\label{sec:overview}
+
+The electrocardiogram (ECG) is the most widely used non-invasive diagnostic
+tool for assessing cardiac electrophysiology and diagnosing arrhythmias.
+However, ECG reading is time consuming and is normally performed manually,
+which makes it vulnerable to inter-observer variability and limits its use
+for long-term or continuous monitoring. A single 24-hour ambulatory record
+can contain on the order of $10^{5}$ heart beats, and annotating such a
+record manually is expensive and impractical at scale. There is therefore a
+clear and growing need for automated, high-throughput screening systems that
+can classify beats rapidly, precisely, and reliably.
+
+Recent advances in deep learning have substantially improved automated ECG
+analysis. Convolutional neural networks (CNNs) extract ECG morphology
+directly from the raw signal, while recurrent networks such as long
+short-term memory (LSTM) architectures capture the temporal relationships
+between successive cardiac beats. Self-attention and Transformer encoders
+have also been introduced to focus the model on the most informative signal
+regions, increasing both classification performance and interpretability.
+Channel-recalibration mechanisms such as squeeze-and-excitation (SE) blocks
+and feature-wise conditioning schemes like FiLM further improve the ability
+of a network to discriminate morphologically similar classes at modest
+parameter cost. Finally, explainable artificial intelligence (XAI)
+techniques such as Grad-CAM and Integrated Gradients provide visual
+explanations of model decisions, which helps build clinician confidence in
+automated systems.
+
+In this thesis, a hybrid CNN--BiLSTM--attention model and a lightweight
+multi-scale feature-augmented network (MSFT-Net) are designed, trained, and
+compared for five-class ECG beat classification under a strict
+record-disjoint inter-patient protocol, and the best model is quantised and
+deployed on an STM32 microcontroller.
+
+
+\section{Background and Motivation}
+\label{sec:background}
+
+Despite the progress described above, several key issues remain unresolved
+in the automated ECG classification literature. Many existing studies focus
+on maximising classification accuracy while providing little transparency
+into the decision-making process of the deep learning model. Public ECG
+datasets are skewed, noisy, and dominated by normal beats, which reduces the
+capability of models trained on them to recognise rare but clinically
+important abnormal classes.
+
+An even more serious, and less frequently discussed, issue concerns the
+evaluation protocol. A large portion of the literature reports results under
+a \emph{beat-level} split in which beats from the same patient appear in
+both training and test sets. Because consecutive beats of one patient are
+strongly correlated in morphology and rhythm, a sufficiently expressive
+model can simply memorise the patient-specific beat templates and recall
+them at test time. The resulting figures measure within-patient recall
+rather than generalisation to unseen patients, and they are not comparable
+to inter-patient results, which typically reach much lower performance
+levels, especially for minority classes. The ANSI/AAMI EC57 standard
+recommends the record-disjoint DS1/DS2 partition of de~Chazal
+et~al.~\cite{dechazal2004} precisely to avoid this problem, yet recent
+systematic reviews of the field show that both the standard partition and
+proper class grouping are frequently bypassed~\cite{silva2025systematic,xiao2023systematic}.
+
+Finally, the five AAMI superclasses are not equally difficult, and each
+resistant class fails for different reasons. A supraventricular ectopic beat
+($S$) is defined by \emph{prematurity}, a near-normal QRS complex arriving
+too early, so a fixed window centred on the R-peak alone cannot separate
+inter-patient $S$ beats from normal ($N$) beats without timing information.
+A fusion beat ($F$) is, by definition, a morphological mixture of a normal
+and a ventricular depolarisation, so its features are inherently ambiguous.
+The unclassifiable class ($Q$) consists almost entirely of beats from four
+paced records pointed to by EC57, so its statistics rest on very few
+patients. These class-specific challenges motivate the feature engineering
+and targeted treatments developed in this work.
+
+The motivation of this thesis is therefore threefold: (i) to build a hybrid
+deep learning classifier that learns ECG morphology and rhythm together, so
+that timing-sensitive classes such as $S$ are recognised correctly;
+(ii) to evaluate it honestly under a record-disjoint inter-patient protocol
+so that the reported numbers reflect genuine generalisation to unseen
+patients; and (iii) to make the model compact and quantisable so that it can
+run in real time on a microcontroller-class wearable device, which is the
+computing environment available in real ambulatory monitoring.
+
+
+\section{Literature Review}
+\label{sec:literature}
+
+Automated ECG arrhythmia classification research has developed along several
+largely independent dimensions (architecture design, class-imbalance
+mitigation, edge deployability, explainability, and evaluation
+methodology) that are rarely optimised together within a single study. This
+review considers each axis in turn, focusing on studies published mainly
+between 2020 and 2026 together with the foundational earlier works that
+established the field's core methods, and closes by identifying the gap
+that motivates the present work.
+
+\subsection{CNN--recurrent hybrids and channel attention}
+
+Convolutional and recurrent architectures remain the predominant building
+blocks for ECG beat classification. Kiranyaz~et~al.~\cite{kiranyaz2015}
+made one of the first contributions, showing that patient-specific 1-D
+convolutional classifiers can run in real time on wearable devices; the
+method is not scalable to population level, however, because the filters are
+tuned per person. Channel-recalibration mechanisms were later transplanted
+into ECG backbones: Zhang~et~al.~\cite{zhang2020seecgnet} proposed
+SE-ECGNet, a multi-scale residual network whose SE gating ``reweighs''
+convolutional channels and improves discrimination between morphologically
+similar beat types at negligible parameter cost. Zheng~et~al.
+\cite{zheng2025multiinput} extended this idea with a two-branch, multi-input
+CNN that fuses short-window and long-window spectrograms of the same beat,
+reporting 99.13\% and 95.84\% accuracy, and 94.46\% and 95.91\% macro-$F_1$,
+on the MIT-BIH and SPH databases respectively. A recurring finding of this line of work is
+that narrowly directing attention at the channel level does not by itself
+close the performance gap between the majority normal class and the
+clinically important minority ectopic classes.
+
+\subsection{Residual, spatial, and self-attention architectures}
+
+A second stream of research places attention at the spatial level.
+Xu~et~al.~\cite{xu2022racnn} fused residual skip connections with a U-Net
+like attention gate (RA-CNN) and reported 98.5\% accuracy on a strict
+inter-patient DS1/DS2 split, with class-wise $F_1$ scores of 82.8\% and
+91.7\% for the supraventricular and ventricular classes, figures that are
+informative precisely because they are reported under the more difficult
+inter-patient regime. Full Transformer self-attention has also been applied:
+Islam~et~al.~\cite{islam2024} proposed CAT-Net, a cascaded convolutional,
+attention, and Transformer network for single-lead ECG classification that
+reached 99.14\% accuracy on MIT-BIH by learning long-range inter-beat
+dependencies that fixed-receptive-field CNNs cannot represent; the authors
+note, however, that the model is too large for wearable deployment. Xia
+et~al.~\cite{xia2023transformer} reported a lighter design combining a CNN
+front end with a denoising autoencoder and a Transformer encoder, evaluated
+explicitly under the inter-patient paradigm, and Anjum~et~al.
+\cite{anjum2023temporal} proposed a temporal Transformer-based fusion
+framework for morphological (rather than rhythmic) arrhythmia classes.
+Taken together, these studies suggest that self-attention is not a
+substitute for, but rather a complement to, convolutional morphology
+extraction, a finding that directly motivates the dual-branch
+CNN--Transformer design considered in this thesis.
+
+\subsection{Hybrid CNN--BiLSTM--attention frameworks and gated fusion}
+
+Recurrent sequence modelling is frequently combined with convolutional and
+attention modules to capture morphology and rhythm simultaneously. Mechichi
+and Benzarti~\cite{mechichi2025enhanced} proposed a CNN--CBAM--BiLSTM
+nested network in which convolutional block attention rectifies spatial and
+channel features and a BiLSTM layer models beat-to-beat dependencies,
+reporting 99.20\% accuracy, 97.50\% sensitivity, and 98.29\% mean $F_1$ on
+MIT-BIH after SMOTE-based rebalancing; the authors explicitly identify the
+BiLSTM stage as the main computational burden, a limitation that recurs
+throughout the lightweight-deployment literature. The family of
+architectures also disagrees on how parallel branches should be integrated:
+concatenation, summation, and learned gating are all used, and the choice of
+fusion mechanism carries measurable penalties for minority-class recall
+rather than being a neutral implementation detail. Feature-wise linear
+modulation (FiLM)~\cite{perez2018film} offers a lightweight, per-channel
+conditioning alternative for injecting auxiliary information.
+
+\subsection{Image-based and time-frequency representations}
+
+For the three-class separation of arrhythmia (ARR), congestive heart
+failure (CHF), and normal sinus rhythm (NSR), converting the 1-D signal into
+a 2-D time-frequency image has been fruitful. Olanrewaju~et~al.
+\cite{olanrewaju2021cwt} classified scalograms obtained with the continuous
+wavelet transform (CWT) using an AlexNet-based deep network, reaching 98.7\%
+accuracy on the ARR/CHF/NSR corpus. Madan~et~al.~\cite{madan2022} fused a 2-D CNN
+with an LSTM stage running over scalogram sequences to reach similar
+accuracy, while Prusty~et~al.~\cite{prusty2024} paired SIFT features with a
+CNN classifier to achieve 99.78\% accuracy at the cost of an extra,
+non-differentiable feature-extraction stage that complicates end-to-end
+optimisation. These studies confirm the discriminative power of image-based
+representations for ARR/CHF/NSR, but none addresses microcontroller-class
+deployment or a record-disjoint inter-patient partition, a limitation that
+is revisited in the evaluation-critique part of this review.
+
+\subsection{Class imbalance and synthetic minority augmentation}
+
+The fusion ($F$) and supraventricular ($S$) classes together contain fewer
+than 5\% of the beats in MIT-BIH, so class-imbalance treatment is
+near-ubiquitous in the literature. The most popular baseline is SMOTE-family
+oversampling~\cite{chawla2002smote}, used directly in several of the works
+cited above; more recent generative approaches train conditional or
+Wasserstein GANs to synthesise physiologically plausible minority-class
+beats, achieving up to 4--9 percentage points of improvement in minority
+precision when the synthetic beats are quality-screened against real-beat
+templates. A major drawback of these methods is that unscreened synthetic
+beats can be trivially distinguished from real ones by a downstream
+discriminator; an almost-perfect discriminator AUC is reported as direct
+proof of an under-converged generator rather than of class-balancing
+success. This diagnostic (training a real-versus-synthetic discriminator
+and using its AUC as a quality-control gate) is adopted as a validation
+step in the augmentation pipeline of the present study.
+
+\subsection{Lightweight and edge-deployable architectures}
+
+A growing body of literature considers deployment directly on
+microcontroller-class hardware rather than treating quantisation as an
+afterthought. Busia~et~al.~\cite{busia2024tinytransformer} designed a tiny
+Transformer with only 6k parameters that achieves 98.97\% accuracy on five
+AAMI classes with sub-8-bit integer inference, executing one inference in
+4.28\,ms at 0.09\,mJ on the ultra-low-power GAP9 processor, evidence that
+self-attention, previously thought to require too much memory for
+microcontrollers, can be made competitive with convolutional baselines. At
+the opposite end of the hardware spectrum, Zambrano-de~la~Torre
+et~al.~\cite{zambrano2026tinyml} implemented a quantised 1-D CNN on an 8-bit
+Arduino UNO (32\,KB flash, 2\,KB SRAM), achieving 97.6\% accuracy on a
+reduced three-class problem with a footprint below 24\,KB INT8. The authors
+acknowledge, however, that their evaluations use a beat-level split without
+patient separation, a known source of overly optimistic numbers. The
+three-way trade-off between representational capacity, efficiency, and
+feasible evaluation is the central concern of this literature, and it is
+what motivates the ``dual-model'' design (an accuracy-oriented hybrid and a
+deployment-oriented lightweight network) used in the present study.
+
+\subsection{Evaluation methodology: the inter-patient/intra-patient divide}
+
+Almost all of the studies above share a methodological thread that deserves
+separate treatment. Two recently published systematic reviews of the ECG
+arrhythmia classification literature, covering the years 2017--2024, found
+that a substantial fraction of published works either fail to state whether
+their split is inter-patient or intra-patient, or report only the more
+favourable intra-patient figure~\cite{silva2025systematic,xiao2023systematic}.
+Silva~et~al.~\cite{silva2025systematic} formalise an ``Embedded, Clinical,
+and Comparative Criteria'' (E3C) checklist and find that very few surveyed
+studies satisfy inter-patient partitioning, AAMI-compliant class grouping,
+and embedded feasibility simultaneously. This reporting inconsistency has
+real consequences: the 85--100\% accuracy figures reported under beat-level
+splits collapse dramatically under a record-disjoint protocol (equivalent
+architectures have been shown to drop to below 60\% inter-patient
+accuracy) because beats from the same patient are morphologically
+correlated and the model exploits this correlation to memorise
+patient-specific templates rather than to generalise. The headline accuracy
+values reported throughout the literature are therefore not directly
+comparable unless the evaluation protocol is controlled for.
+
+\subsection{Explainability}
+
+Clinical adoption of automated ECG classifiers depends on the decision
+process being transparent rather than a black box. Grad-CAM, originally
+designed for 2-D image classifiers, has been adapted to 1-D ECG backbones to
+produce beat-level saliency maps that can be checked against known
+P--QRS--T morphology~\cite{selvaraju2017gradcam}. Integrated Gradients
+offers a complementary, axiomatically based attribution that does not rely
+on the selection of a specific convolutional layer
+\cite{sundararajan2017integrated}. Grad-CAM remains the most common method
+in the XAI-for-ECG literature and is normally applied to verify
+qualitatively whether the classifier's attention falls on the QRS complex
+and T-wave rather than on dataset-specific artefacts. Quantitative
+validation of this alignment (for example by deletion curves or
+intersection-over-union against cardiologist-annotated intervals) is
+reported far less often, and this thesis treats it as a faithfulness
+challenge rather than assuming correctness from visual inspection alone.
+
+\subsection{Summary and identified gap}
+
+The surveyed literature documents separately that: (i) channel and spatial
+attention improve discrimination of morphologically similar
+beats~\cite{hu2018squeeze,zhang2020seecgnet,xu2022racnn,zheng2025multiinput};
+(ii) long-range dependencies that convolutional or recurrent layers alone
+cannot capture are effectively handled by transformer
+self-attention~\cite{islam2024,xia2023transformer,anjum2023temporal,vaswani2017attention};
+(iii) gated, learnable fusion of parallel branches outperforms naive
+concatenation; (iv) quality-screened generative or SMOTE-based augmentation
+recovers minority-class recall~\cite{chawla2002smote}; (v) models with
+sub-10k parameters can achieve competitive accuracy with INT8 quantisation
+on microcontroller-class hardware~\cite{busia2024tinytransformer,zambrano2026tinyml};
+and (vi) none of the accuracy figures above is trustworthy unless it is
+reported under a protocol that withstands inter-patient
+scrutiny~\cite{silva2025systematic,xiao2023systematic,dechazal2004}. What no
+single study has combined is a clearly stated record-disjoint protocol,
+explicit and ablated treatment of both of the hardest AAMI classes (fusion
+and supraventricular), a faithfulness-tested explainability layer, and a
+measured, rather than asserted, microcontroller deployment of the full
+inter-patient model. Two architectural families (a CNN--BiLSTM--attention
+hybrid and a gated-fusion lightweight CNN) are therefore evaluated in this
+thesis under identical data splits so that they can be compared
+statistically rather than across incommensurable papers. This gap is the
+direct driver of the research described in the remainder of this book.
+
+
+\section{Research Gap}
+\label{sec:gap}
+
+Existing automated ECG classification systems suffer from three
+interlocking weaknesses. First, most published results are obtained under
+beat-level or otherwise leaky splits that inflate accuracy by letting the
+model memorise patient-specific templates, so the reported numbers do not
+reflect how the system would behave on an unseen patient. Second, the two
+most clinically dangerous minority classes (fusion and supraventricular
+ectopic beats) remain poorly recognised because they require timing and
+template information that raw-waveform-only models do not receive. Third,
+most accurate models are too large to run on the microcontroller-class
+hardware found in wearable monitors, and the few lightweight models that do
+run on such hardware are typically validated under optimistic, non-standard
+protocols. Therefore, there is a need for a compact, feature-augmented deep
+learning classifier that is trained and tested under a strictly
+record-disjoint inter-patient protocol, treats the resistant $S$ and $F$
+classes explicitly, verifies its explainability quantitatively, and is
+demonstrated to run in real time on an actual microcontroller.
+
+
+\section{Objective}
+\label{sec:objectives}
+
+The objectives of this thesis are:
+
+\begin{enumerate}
+  \item To design a hybrid CNN--BiLSTM--attention model and a lightweight
+        multi-scale feature-augmented network (MSFT-Net) that classify the
+        five ANSI/AAMI EC57 beat classes (N, S, V, F, Q) from one-second
+        R-peak-centred ECG windows combined with rhythm, morphological, and
+        template-similarity auxiliary features.
+  \item To evaluate both architectures under a strictly record-disjoint,
+        inter-patient DS1/DS2 protocol (and a permissive intra-patient
+        six-category ECG protocol that adds a CHF-derived clinical-condition
+        category for comparison), reporting per-class sensitivity
+        and positive predictivity with statistical significance testing.
+  \item To analyse the contribution of each architectural and feature
+        component through a controlled ablation study, and to verify the
+        faithfulness of the Grad-CAM and Integrated-Gradients explanations
+        using deletion curves.
+  \item To quantise the best inter-patient model to INT8 and deploy it on an
+        STM32 microcontroller, measuring accuracy retention, model size,
+        latency, and memory footprint.
+\end{enumerate}
+
+
+\section{Thesis/Project Outline}
+\label{sec:outline}
+
+The remainder of this book is organised as follows.
+
+\textbf{Chapter~\ref{ch:methodology}} describes the methodology adopted in
+this work: the MIT-BIH and auxiliary databases, beat extraction and
+filtering, the record-disjoint partitioning scheme, the auxiliary feature
+vector, the two network architectures, the training and imbalance-handling
+procedures, and the statistical evaluation and explainability methods.
+
+\textbf{Chapter~\ref{ch:results}} presents the results obtained: the
+exploratory intra-patient six-category ECG study, the inter-patient five-class study with its
+AAMI EC57 reporting, the ablation and fusion-beat analyses, the
+explainability and robustness results, and the microcontroller deployment
+measurements.
+
+\textbf{Chapter~\ref{ch:social}} examines the social and environmental
+influence of the work, including its financial, health, safety, legal, and
+sustainability implications for Bangladesh.
+
+\textbf{Chapter~\ref{ch:po}} explains how the work addresses the program
+outcomes, complex engineering problems and complex engineering activities
+defined in the EEE 4000 manual.
+
+\textbf{Chapter~\ref{ch:conclusion}} concludes the book and outlines the
+future plan.
+
+The work was carried out over the fourth year of the B.Sc.\ in
+Electrical \& Electronic Engineering programme at RUET.

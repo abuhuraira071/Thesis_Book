@@ -1,0 +1,86 @@
+% ==========================================================================
+% COVER PAGE
+%
+% Layout and font sizes are copied from Annex III of the EEE 4000 manual
+% ("Cover Page for hard copy of the book", Annex pages 4 and 6):
+%
+%   Thesis title ............ 20 pt, UPPERCASE
+%   Submission statement .... 12 pt
+%   "Bachelor of Science in / Electrical & Electronic Engineering" .. 12 pt
+%   Name and Roll No. ....... 12 pt, BOLD, Title Case
+%   Motto + RUET logo ....... below the author block
+%   Department .............. 14 pt
+%   University .............. 16 pt
+%   Month, Year ............. 12 pt
+%
+% You should NOT need to edit this file -- everything comes from config.tex.
+% The only exception is a multi-author project: see the marked block below.
+% ==========================================================================
+
+% NOTE: this page deliberately does NOT use the \begin{titlepage}
+% environment, because that environment resets the page counter and would
+% make the Acknowledgement come out as page i instead of page ii.
+%
+% SPACING NOTE: the vertical gaps below use \vfill (elastic glue) instead
+% of fixed \vspace amounts. A long thesis title (7+ lines at 20 pt) plus
+% fixed gaps once overflowed the text block onto a second page, which
+% shifted every Roman page number by one against Annex III. With \vfill
+% the blocks spread evenly and the cover is ALWAYS exactly one page,
+% whatever the length of the title. The small fixed \vspace values are
+% minimum separations that never stretch on their own.
+\thispagestyle{empty}
+\begin{center}
+\setstretch{1.15}
+
+\vspace*{4pt}
+
+% ----- Thesis / project title: 20 pt, uppercase -------------------------
+{\fontsize{20}{24}\selectfont \MakeUppercase{\thesistitle}}
+
+\vfill
+
+% ----- Submission statement: 12 pt (fixed wording from the manual) ------
+{\fontsize{12}{15}\selectfont \submissionstatement}
+
+\vspace{6pt}
+
+{\fontsize{12}{15}\selectfont Bachelor of Science in}
+
+\vspace{4pt}
+
+{\fontsize{12}{15}\selectfont \degreefield}
+
+\vfill
+
+{\fontsize{12}{15}\selectfont by}
+
+\vspace{6pt}
+
+% ----- Author(s): 12 pt, bold, Title Case -------------------------------
+% >>> MULTIPLE STUDENTS: one pair of lines per student.
+{\fontsize{12}{15}\selectfont \textbf{\studentname}}\\[2pt]
+{\fontsize{12}{15}\selectfont \textbf{Roll No. \studentroll}}
+
+\vspace{6pt}
+
+{\fontsize{12}{15}\selectfont \textbf{\studentnametwo}}\\[2pt]
+{\fontsize{12}{15}\selectfont \textbf{Roll No. \studentrolltwo}}
+
+\vfill
+
+% ----- Motto and RUET logo ----------------------------------------------
+{\fontsize{11}{13}\selectfont \universitymotto}\\[3pt]
+\ruetlogo{0.85in}
+
+\vspace{8pt}
+
+% ----- Department (14 pt) and university (16 pt) -------------------------
+{\fontsize{14}{17}\selectfont \departmentname}\\[2pt]
+{\fontsize{16}{19}\selectfont \universityname}
+
+\vspace{10pt}
+
+{\fontsize{12}{15}\selectfont \submissionmonth, \submissionyear}
+
+\end{center}
+\clearpage

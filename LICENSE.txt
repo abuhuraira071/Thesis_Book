@@ -1,0 +1,37 @@
+TEMPLATE LICENSE
+================
+
+This LaTeX template (the .tex source files, README.md and the folder
+structure) is released for free use by students of the Department of
+Electrical & Electronic Engineering, Rajshahi University of Engineering &
+Technology, and by anyone else who finds it useful.
+
+You may use, copy, modify and redistribute the template files for any
+purpose, including your own thesis or project book, without restriction and
+without needing to credit anyone. The template is provided "as is", with no
+warranty of any kind. The authors are not responsible for a submission that
+is rejected for formatting reasons -- you remain responsible for checking
+your final PDF against the current official Department instruction.
+
+
+NOT COVERED BY THIS LICENCE
+---------------------------
+
+The following items are included for your convenience but are NOT the
+template authors' to license, and remain the property of their owners:
+
+1. EEE_4000_Thesis_Project_Manual.pdf
+   The official EEE 4000 Project & Thesis Manual, property of the Department
+   of Electrical & Electronic Engineering, RUET. Included unmodified so that
+   the official instructions travel with the template. Do not alter it.
+
+2. assets/ruet_logo_color.png, assets/ruet_logo_bw.png,
+   assets/ruet_logo_vector.pdf
+   The official logo and seal of Rajshahi University of Engineering &
+   Technology. Use it only for legitimate RUET academic work. Do not modify,
+   recolour or distort it.
+
+3. The wording of the cover page, the two certificate pages, and the
+   Program Outcome, Complex Engineering Problem and Complex Engineering
+   Activity statements reproduced in Chapter 5. All of these are quoted from
+   the official EEE 4000 manual and belong to the Department.

@@ -1,0 +1,355 @@
+% ==========================================================================
+% CHAPTER 5 -- ADDRESSING PROGRAM OUTCOMES, COMPLEX ENGINEERING PROBLEMS
+%              AND ACTIVITIES
+%
+% The three tables contain the OFFICIAL statements copied from Annex V of
+% the EEE 4000 manual. The right-hand column of each table points to the
+% specific sections of this book where each outcome/attribute is addressed.
+% ==========================================================================
+
+\chapter{Addressing Program Outcomes, Complex Engineering Problems and Activities}
+\label{ch:po}
+
+This chapter maps the work presented in Chapters~\ref{ch:introduction}--\ref{ch:social}
+onto the program outcomes (POs), complex engineering problem (CEP)
+attributes, and complex engineering activity (CEA) attributes defined in
+the EEE 4000 manual. For each item, the section of this book that
+demonstrates the outcome is identified, together with a one-line
+explanation of how the work addresses it. The statements in the tables are
+quoted verbatim from Annex V of the manual.
+
+
+\section{Addressing Program Outcomes}
+\label{sec:po}
+
+Table~\ref{tab:po_mapping} maps the twelve program outcomes of the EEE 4000
+manual onto the specific evidence in this book. The work is a
+computational, research-based thesis, so the strongest outcomes are
+PO(a)--PO(g) and PO(l); teamwork and management outcomes (PO(i), PO(j),
+PO(k)) are addressed through the project execution process itself.
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.55in}>{\raggedright\arraybackslash}p{3.1in}>{\raggedright\arraybackslash}p{1.5in}@{}}
+\caption{Program Outcomes (POs) of the Project \& Thesis (EEE 4000)}
+\label{tab:po_mapping} \\
+\toprule
+\textbf{PO} & \textbf{Statement} & \textbf{Addressing the PO} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\small\textit{Table \thetable\ continued from the previous page}} \\
+\toprule
+\textbf{PO} & \textbf{Statement} & \textbf{Addressing the PO} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+PO(a) & Apply knowledge of mathematics, natural science, engineering
+fundamentals and an engineering specialization as specified in K1 to K4
+respectively to the solution of complex engineering problems.
+(Engineering knowledge) & Sections~\ref{sec:data_analysis}
+and~\ref{sec:math}: signal processing (Butterworth
+filtering, Pan--Tompkins), neural network mathematics, and the statistical
+formulation of the classifiers. \\
+\addlinespace
+
+PO(b) & Identify, formulate, research literature and analyze complex
+engineering problems reaching substantiated conclusions using first
+principles of mathematics, natural sciences and engineering sciences.
+(K1 to K4) (Problem analysis) &
+Sections~\ref{sec:literature}--\ref{sec:gap}: literature review and
+research gap identify the protocol and minority-class problems; the
+ablation study (Section~\ref{subsec:ablation}) reaches substantiated
+conclusions. \\
+\addlinespace
+
+PO(c) & Design solutions for complex engineering problems and design
+systems, components or processes that meet specified needs with appropriate
+consideration for public health and safety, cultural, societal, and
+environmental considerations. (K5) (Design/Development of solutions)
+& Sections~\ref{sec:math}--\ref{sec:proposed_methodology}: design of the
+hybrid and MSFT-Net architectures; Chapter~\ref{ch:social} addresses the
+health, safety, legal, and societal considerations of the design. \\
+\addlinespace
+
+PO(d) & Conduct investigations of complex problems using research-based
+knowledge (K8) and research methods including design of experiments,
+analysis and interpretation of data, and synthesis of information to provide
+valid conclusions. (Investigation)
+& Chapter 3: controlled ablation experiments, paired McNemar tests,
+Wilson and bootstrap confidence intervals, and the interpretation of the
+results. \\
+\addlinespace
+
+PO(e) & Create, select and apply appropriate techniques, resources, and
+modern engineering and IT tools, including prediction and modelling, to
+complex engineering problems, with an understanding of the limitations. (K6)
+(Modern tool usage)
+& Sections~\ref{sec:materials},
+\ref{sec:proposed_methodology}--\ref{sec:workflow}: Python,
+TensorFlow/Keras, scikit-learn, TFLite
+Micro, and STM32 toolchains; the limitations are stated explicitly in
+Sections~\ref{subsec:explain} (explainability) and~\ref{sec:limitations}. \\
+\addlinespace
+
+PO(f) & Apply reasoning informed by contextual knowledge to assess societal,
+health, safety, legal and cultural issues and the consequent
+responsibilities relevant to professional engineering practice and solutions
+to complex engineering problems. (K7) (The engineer and the society)
+& Chapter~\ref{ch:social}: financial and health influences, safety,
+legal/standards and
+cultural/ethical assessment of the wearable classifier. \\
+\addlinespace
+
+PO(g) & Understand and evaluate the sustainability and impact of
+professional engineering work in the solution of complex engineering
+problems in societal and environmental contexts. (K7)
+(Environment and sustainability)
+& Sections~\ref{sec:environment} and~\ref{sec:sustainability}:
+environmental life-cycle assessment and
+sustainability analysis of the device, linked to the SDGs. \\
+\addlinespace
+
+PO(h) & Apply ethical principles and commit to professional ethics and
+responsibilities and norms of engineering practice. (K7) (Ethics)
+& Section~\ref{subsec:safety_legal_cultural}: honest reporting of the
+near-zero faithfulness of the
+attribution maps; Section~\ref{subsec:explain} and the negative results in
+Sections~\ref{subsec:intra_compress} and~\ref{subsec:fbeat} are reported
+rather than suppressed. \\
+\addlinespace
+
+PO(i) & Function effectively as an individual, and as a member or leader in
+diverse teams and in multi-disciplinary settings.
+(Individual work and teamwork) & The thesis was executed as a two-member
+team: the dataset preparation and evaluation pipeline (Chapter~\ref{ch:methodology}) and the
+deployment work (Section~\ref{subsec:mcu}) were divided and integrated; weekly
+supervisor meetings required individual reporting and joint review. \\
+\addlinespace
+
+PO(j) & Communicate effectively on complex engineering activities with the
+engineering community and with society at large, such as being able to
+comprehend and write effective reports and design documentation, make
+effective presentations, and give and receive clear instructions.
+(Communication) & This book itself, the accompanying defence presentation,
+and the manuscript prepared for journal submission communicate the work to
+the engineering community. \\
+\addlinespace
+
+PO(k) & Demonstrate knowledge and understanding of engineering management
+principles and economic decision-making and apply these to one's own work,
+as a member and leader in a team, to manage projects and in
+multidisciplinary environments. (Project management and finance)
+& The project was scheduled across the EEE 4000 timeline with milestone
+reviews; the budget was constrained to free public data, open-source tools,
+and low-cost commodity hardware, as justified in
+Section~\ref{subsec:financial_health}. \\
+\addlinespace
+
+PO(l) & Recognize the need for, and have the preparation and ability to
+engage in independent and life-long learning in the broadest context of
+technological change. (Lifelong learning)
+& Sections~\ref{sec:literature} and~\ref{sec:future}: the literature review
+and the future plan show
+engagement with the rapidly evolving fields of deep learning and TinyML,
+and identify the specific next steps to continue learning. \\
+
+\end{longtable}
+
+The mapping above is substantiated in prose as follows. The engineering
+knowledge outcome (PO(a)) is demonstrated by the full pipeline: the
+Butterworth filtering and Pan--Tompkins R-peak detection of
+Section~\ref{sec:data_analysis} apply classical signal-processing theory,
+while Equations~\ref{eq:attention}--\ref{eq:film} of
+Section~\ref{sec:math} apply the mathematics of attention and gating to a
+biomedical signal. Problem analysis (PO(b)) is demonstrated throughout
+Chapter~\ref{ch:results}: the study is designed as a controlled experiment
+with explicit partitions, the hypotheses are tested with McNemar's test and
+Holm correction (Section~\ref{sec:eval_criteria}), and the negative results
+(the collapsed $A2$ augmentation arm in Table~\ref{tab:fablation}, the
+failed dynamic-range quantisation in Section~\ref{subsec:intra_compress})
+are reported and explained rather than hidden. Design and development
+(PO(c)) is demonstrated by the MSFT-Net architecture itself, whose design
+decisions (multi-scale depthwise-separable convolutions, SE gating, FiLM
+conditioning) are each justified in Sections~\ref{sec:math}
+and~\ref{subsec:ablation} by ablation evidence rather than assertion.
+
+Investigation (PO(d)) has the strongest supporting evidence: the twelve-arm ablation
+study of Section~\ref{subsec:ablation}, the fusion-beat staged
+intervention of Section~\ref{subsec:fbeat}, and the cross-protocol
+synthesis of Section~\ref{sec:crossprotocol} are genuine investigations
+that produce statistically supported conclusions. Modern tool usage (PO(e))
+is shown by the use of state-of-the-art deep learning frameworks and the
+embedded deployment toolchain, with the limitations of each acknowledged:
+the explainability maps fail the faithfulness test (Section~\ref{subsec:explain}),
+and the host-measured latency of the tiny model is distinguished from the
+on-device measurement (Sections~\ref{subsec:mcu}). The engineer-and-society
+(PO(f)) and environment-and-sustainability (PO(g)) outcomes are addressed
+in Chapter~\ref{ch:social}, which assesses health, financial, legal, and
+environmental impacts in the Bangladeshi context. Ethics (PO(h)) is
+demonstrated by the candid reporting policy of this book: negative results
+are reported as such, the $Q$-class caveats are stated explicitly
+(Section~\ref{subsec:overall}), and no claim of clinical validity is made
+beyond what the data support.
+
+The teamwork (PO(i)), communication (PO(j)), and management (PO(k))
+outcomes are addressed through the execution of the project itself rather
+than through any single technical section. Finally, lifelong learning
+(PO(l)) is demonstrated by the literature review of Section~\ref{sec:literature},
+which spans 2015--2026 work across six research directions, and by the
+concrete future plan of Section~\ref{sec:future}.
+
+
+\section{Addressing Complex Engineering Problems}
+\label{sec:cep}
+
+The thesis addresses a complex engineering problem because it involves
+research-based knowledge at the forefront of the discipline, wide-ranging
+technical issues, and non-obvious design decisions. Table~\ref{tab:cep_mapping}
+justifies each attribute of a complex engineering problem with evidence from
+this work.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.4in}>{\raggedright\arraybackslash}p{2.4in}>{\raggedright\arraybackslash}p{1.4in}@{}}
+\caption{Complex Engineering Problem Solving through the Project \& Thesis (EEE 4000)}
+\label{tab:cep_mapping} \\
+\toprule
+\textbf{Attribute} & \textbf{Statement} & \textbf{How It Is Addressed} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\small\textit{Table \thetable\ continued from the previous page}} \\
+\toprule
+\textbf{Attribute} & \textbf{Statement} & \textbf{How It Is Addressed} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+Depth of knowledge required (P1) & Requires research-based knowledge, much
+of which is at, or informed by, the forefront of the professional discipline
+and that allows a fundamental-based, first principles analytical approach
+& Section~\ref{sec:literature}: the solution draws on 2015--2026
+state-of-the-art research
+(attention, SE, FiLM, TinyML); Section~\ref{sec:math} derives the
+architectures from first principles. \\
+\addlinespace
+
+Range of conflicting requirements (P2) & Involve wide-ranging or conflicting
+technical, engineering and other issues
+& The accuracy--footprint--latency trade-off of Section~\ref{subsec:mcu},
+and the conflict between permissive and record-disjoint evaluation
+(Section~\ref{sec:crossprotocol}), are conflicting requirements resolved by
+measurement. \\
+\addlinespace
+
+Depth of analysis required (P3) & Have no obvious solution and require
+abstract thinking, originality in analysis to formulate suitable models
+& Section~\ref{sec:proposed_methodology}: the fusion-beat treatment and the
+auxiliary feature vector
+are original formulations; Section~\ref{subsec:fbeat} shows the naive
+solution ($A2$)
+fails and only a staged, analysed design works. \\
+\addlinespace
+
+Familiarity of issues (P4) & Involve infrequently encountered issues
+& The $S$ and $F$ classes (Sections~\ref{sec:background}
+and~\ref{subsec:fbeat}) are rare beats whose
+correct classification is unfamiliar to generic models; the $Q$-class
+single-patient caveat (Section~\ref{subsec:overall}) is an infrequently
+encountered statistical issue. \\
+\addlinespace
+
+Extent of applicable codes (P5) & Are outside problems encompassed by
+standards and codes of practice for professional engineering
+& The ANSI/AAMI EC57 standard (Section~\ref{sec:eval_criteria}) governs
+reporting but does not
+prescribe an architecture or an imbalance strategy;
+Sections~\ref{subsec:ec57}--\ref{subsec:ablation}
+show the standard must be combined with novel design work. \\
+\addlinespace
+
+Extent of stakeholder involvement and conflicting requirements (P6) &
+Involve diverse groups of stakeholders with widely varying needs
+& Section~\ref{sec:societal}: patients (early detection), cardiologists
+(alarm burden,
+trust in explanations), and low-income users (cost) have different needs;
+Section~\ref{subsec:roc} quantifies the trade-off between detection and
+false alarms. \\
+\addlinespace
+
+Interdependence (P7) & Are high-level problems including many component
+parts or sub-problems
+& The pipeline integrates preprocessing, feature engineering, two
+architectures, imbalance handling, explainability, and deployment; the
+ablation of Section~\ref{subsec:ablation} shows the components are
+interdependent, with
+each block critical for a different class. \\
+
+\end{longtable}
+
+
+\section{Addressing Complex Engineering Activities}
+\label{sec:cea}
+
+The development of this system also constitutes a complex engineering
+activity. Table~\ref{tab:cea_mapping} justifies each attribute, drawing on
+Chapter~\ref{ch:social} for the societal and environmental consequences
+(A4).
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{1.4in}>{\raggedright\arraybackslash}p{2.4in}>{\raggedright\arraybackslash}p{1.4in}@{}}
+\caption{Complex Engineering Activities Solving through the Project \& Thesis (EEE 4000)}
+\label{tab:cea_mapping} \\
+\toprule
+\textbf{Attribute} & \textbf{Statement} & \textbf{How It Is Addressed} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{@{}l}{\small\textit{Table \thetable\ continued from the previous page}} \\
+\toprule
+\textbf{Attribute} & \textbf{Statement} & \textbf{How It Is Addressed} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+Range of resources (A1) & Involve the use of diverse resources (and for this
+purpose resources include people, money, equipment, materials, information
+and technologies) &
+Sections~\ref{sec:materials}--\ref{sec:workflow}: three public databases, GPU
+training hardware, STM32 target hardware, Python/TensorFlow/TFLite
+software, and the two authors' and supervisor's expertise. \\
+\addlinespace
+
+Level of interaction (A2) & Require resolution of significant problems
+arising from interactions between wide-ranging or conflicting technical,
+engineering or other issues
+& Sections~\ref{subsec:intra_compress} and~\ref{subsec:mcu}: quantisation
+interacts with accuracy, the
+recurrent stage interacts with the evaluation protocol, and augmentation
+interacts with the fusion class; each interaction was resolved by
+experiment. \\
+\addlinespace
+
+Innovation (A3) & Involve creative use of engineering principles and
+research based knowledge in novel ways
+& Section~\ref{sec:proposed_methodology}: the staged fusion-beat pipeline
+and the
+MSFT-Net design (multi-scale depthwise-separable stem with SE and FiLM)
+are novel combinations of published principles, validated in
+Sections~\ref{subsec:fbeat}--\ref{subsec:ablation}. \\
+\addlinespace
+
+Consequences for society and the environment (A4) & Have significant
+consequences in a range of contexts, characterized by difficulty of
+prediction and mitigation
+& Chapter~\ref{ch:social}: the consequences for cardiac patients and the
+Bangladeshi
+healthcare system are significant; the risk of misdiagnosis and alarm
+fatigue is difficult to predict and is mitigated by statistical operating
+point analysis (Section~\ref{subsec:roc}). \\
+\addlinespace
+
+Familiarity (A5) & Can extend beyond previous experiences by applying
+principles-based approaches
+& The work extends standard CNN/LSTM practice to the record-disjoint
+protocol and to real microcontroller deployment, both of which go beyond
+the experiences reported in most of the surveyed literature
+(Section~\ref{sec:literature}). \\
+
+\end{longtable}

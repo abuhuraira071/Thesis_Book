@@ -1,0 +1,196 @@
+TEMPLATE VALIDATION REPORT
+RUET EEE -- Project & Thesis (EEE 4000) LaTeX Template
+Generated: 13 August 2026
+
+Source of truth: EEE 4000 Project & Thesis Manual, Department of Electrical
+& Electronic Engineering, RUET (included in this package as
+EEE_4000_Thesis_Project_Manual.pdf). Formatting follows General Instructions
+1-16 (manual page 5) and Annex III (Annex pages 4-18).
+
+
+1. COMPILER TESTED
+   XeLaTeX (TeX Live 2023) + BibTeX, four-pass sequence.
+   Tectonic was NOT available in the build environment and is therefore
+   UNTESTED, although the template uses no package that Tectonic lacks.
+   Compile once with Tectonic before relying on it.
+
+2. COMPILATION STATUS
+   PASS. Exit code 0. Output: 29 pages from the empty template.
+   0 undefined references. 0 undefined citations.
+   0 LaTeX warnings. 1 overfull hbox of 0.14 pt (visually undetectable;
+   arises from a long placeholder line and will disappear once the
+   placeholder text is replaced).
+
+3. PAGE GEOMETRY -- VERIFIED BY MEASURING THE OUTPUT PDF
+   Paper size      595.28 x 841.89 pt = A4                        PASS
+   Left margin     measured 1.500 in   (required 1.5 in)          PASS
+   Right margin    measured 0.700 in   (required 0.7 in)          PASS
+   Top margin      1.0 in as set in geometry                      PASS
+   Bottom margin   1.5 in as set in geometry                      PASS
+   Resulting text width 438.51 pt = 6.09 in, consistent with A4
+   minus 1.5 in and 0.7 in.
+   NOTE: microtype character protrusion was deliberately disabled, because
+   it allowed punctuation to hang ~2 pt past the right margin.
+
+4. FONT
+   Requested: Times New Roman via fontspec, as required by General
+   Instruction 2 and Section 7.1. Body size 12 pt.
+   The build machine did not have Times New Roman installed, so the sample
+   PDF was rendered with the automatic fallback, TeX Gyre Termes -- a free
+   metric-compatible Times clone with identical letter widths, so layout and
+   page breaks are unaffected. Compile on a machine with Times New Roman
+   installed (any Windows or macOS system) to embed the genuine font.
+   The template never falls back to Computer Modern.                PASS
+
+5. LINE SPACING
+   \setstretch{1.15} via the setspace package.                      PASS
+   CONFLICT IN THE MANUAL, resolved deliberately: General Instruction 5
+   specifies a 1.15 line gap, while Section 7.1 says 1.5-line spacing.
+   This template implements 1.15, because Instruction 5 sits inside the
+   formatting specification. Documented in README.md section 5, with a
+   one-line change if the Department requires 1.5.
+
+6. PAGE NUMBERING -- VERIFIED PAGE BY PAGE IN THE OUTPUT PDF
+   Cover page                    counts as i, no number printed     PASS
+   Acknowledgement               ii                                 PASS
+   Certificate (Supervisor)      iii                                PASS
+   Certificate (External Member) iv                                 PASS
+   Abstract                      v                                  PASS
+   Contents                      vi                                 PASS
+   List of Figures               viii                               PASS
+   List of Tables                ix                                 PASS
+   List of Abbreviations         x                                  PASS
+   List of Symbols               xi                                 PASS
+   List of Publications          xii                                PASS
+   Chapter 1 onwards             1, 2, 3, ... (automatic switch)    PASS
+   This sequence matches the numbering printed in Annex III exactly.
+   Numbers are centred in the footer; no running header.
+   FIXED DURING BUILD: the cover originally used the titlepage
+   environment, which silently resets the page counter and made the
+   Acknowledgement come out as i instead of ii.
+
+7. CHAPTER STRUCTURE
+   Six chapters, per General Instruction 7:                         PASS
+     1  Introduction
+     2  Methodology
+     3  Results and Discussion
+     4  Social and Environmental Influence
+     5  Addressing Program Outcomes, Complex Engineering Problems
+        and Activities
+     6  Conclusion and Future Plan
+   No seventh chapter. Chapters 4 and 5 are separate, not merged.
+   Section headings within each chapter follow the Contents page of
+   Annex III.
+   MANUAL ERRATUM HANDLED: the Annex III Contents lists the sections of
+   Chapter 6 as "7.1 Conclusion, 7.2 Limitations, 7.3 Future Plan". That is
+   a typing slip. LaTeX numbers them 6.1, 6.2, 6.3, which is internally
+   consistent. A comment in chapter6_conclusion_future_plan.tex explains
+   this so the student is not confused when comparing with the manual.
+
+8. HEADING SIZES -- FROM THE ANNEX III ANNOTATIONS
+   Cover: title 20 pt uppercase; submission statement and degree 12 pt;
+   name and roll 12 pt bold Title Case; Department 14 pt; University 16 pt;
+   date 12 pt.                                                      PASS
+   Preliminary page headings 18 pt bold, centred.                   PASS
+   Chapter opening: "Chapter N" 18 pt bold, chapter name 16 pt bold,
+   both centred.                                                    PASS
+   Section 14 pt bold; subsection 12 pt bold.                       PASS
+   Certificate pages: Department and University 16 pt bold,
+   "CERTIFICATE" 16 pt bold.                                        PASS
+
+9. TABLE FORMATTING (General Instruction 13)
+   Caption above the table and centre aligned                       PASS
+   IEEE style: booktabs horizontal rules only, no vertical rules    PASS
+   No colour anywhere in any table                                  PASS
+   Float placement [!t] / [!b] for top or bottom of page            PASS
+   Worked example in chapter3_results_discussion.tex; multi-page
+   longtable examples in chapter5_po_cep_cea.tex.
+
+10. FIGURE FORMATTING (General Instruction 14)
+   Caption below the figure and centre aligned                      PASS
+   Width-only \includegraphics so aspect ratio is preserved         PASS
+   Comments covering axis labelling, image quality, citing an
+   external source after the caption, and not placing a figure
+   immediately after a heading                                      PASS
+   Float placement [!t] / [!b]                                      PASS
+   FIXED DURING BUILD: the example table and figure were floating to the
+   top of Chapter 3's first page, above the chapter title. Neither
+   \suppressfloats nor a patched \@makechapterhead solved it (titlesec
+   bypasses the latter, and the output routine resets \@topnum). The
+   flafter package fixed it by forbidding any float from appearing before
+   the point where it is defined.
+
+11. AUTOMATIC LISTS
+   Table of Contents generated, correct page numbers                PASS
+   List of Figures: 1 entry (the example figure)                    PASS
+   List of Tables: 4 entries (1 example + 3 mapping tables)         PASS
+   Indentation kept shallow and even via tocloft                    PASS
+
+12. BIBLIOGRAPHY
+   Style: \bibliographystyle{IEEEtran} + \bibliography{bibliography},
+   per General Instruction 9 (IEEE format).
+   bibliography.bib contains three worked examples -- journal article,
+   conference paper, and book -- plus extra templates for a standard, a
+   web page and a thesis.
+   PARTIAL: IEEEtran.bst was NOT installed in the build environment, so the
+   sample PDF was produced with the "unsrt" style as a stand-in to verify
+   that citation keys, numbering, the References chapter and the TOC entry
+   all resolve correctly -- they do, with 0 undefined citations. The shipped
+   Thesis_Book.tex uses IEEEtran, which is present in TeX Live, MiKTeX, Tectonic
+   and Overleaf. Verify the IEEE formatting on your own machine at first
+   compile. README.md section 9 covers the fix if it is missing.
+   Chapter heading renamed from "Bibliography" to "References".
+   FIXED DURING BUILD: '%' is not a comment character in .bib files, so
+   commented-out example entries were still parsed and threw three BibTeX
+   errors. They are now wrapped in @comment{ }.
+
+13. EEE MANUAL PDF
+   EEE_4000_Thesis_Project_Manual.pdf included, byte-for-byte identical to
+   the uploaded original (2,353,396 bytes), unmodified and uncompressed.
+                                                                    PASS
+
+14. LOGOS AND ASSETS
+   assets/ruet_logo_color.png  (1545 x 1850, official RUET logo)
+   assets/ruet_logo_bw.png     (greyscale version, used on certificates)
+   assets/ruet_logo_vector.pdf (vector version, best for printing)
+   The logo embedded in the manual PDF is only 69 x 83 px, too low a
+   resolution to print; the assets above are the same official RUET logo at
+   usable resolution, taken from the RUET department LaTeX template that
+   was supplied as a structural reference.                          PASS
+   The cover page uses the colour logo; both certificate pages use the
+   black-and-white logo, matching Annex III.
+   If a logo file is ever missing, the template still compiles and prints a
+   visible reminder box rather than failing.
+
+15. CSE-SPECIFIC CONTENT REMOVED
+   Full-tree grep over all .tex, .bib, .md and .txt files for
+   "Computer Science", "CSE", "Computer Science & Engineering", the CSE
+   template author's name, "\baselinestretch{1.5}", "\onehalfspacing" and
+   1-inch left/right margins: NO MATCHES.                           PASS
+   All department wording reads "Department of Electrical & Electronic
+   Engineering"; all degree wording reads "Bachelor of Science in
+   Electrical & Electronic Engineering".
+   The CSE template was used only for its folder-layout conventions and for
+   the shared RUET logo asset. No CSE academic requirement, section
+   structure, margin, spacing or five-chapter layout was carried over.
+
+16. BUILD ARTEFACTS
+   All .aux, .log, .toc, .lof, .lot, .out, .bbl, .blg, .fls and
+   .fdb_latexmk files removed before packaging. A sample Thesis_Book.pdf is NOT
+   shipped, so the first thing you compile is your own.             PASS
+
+
+KNOWN LIMITATIONS -- PLEASE READ
+--------------------------------
+a) Tectonic is untested (not available in the build environment).
+b) The IEEEtran bibliography style is untested (not installed in the build
+   environment); "unsrt" was substituted for the test build only.
+c) The sample PDF was rendered in TeX Gyre Termes, not genuine Times New
+   Roman, because the font was not installed on the build machine.
+d) Annex III is a set of annotated screenshots rather than a specification,
+   so exact vertical spacing on the cover and certificate pages is a close
+   reconstruction, not a pixel-perfect match. All stated font sizes,
+   margins, wording and page numbers do match.
+
+Departmental instructions change. Check your final PDF against the newest
+official instruction from the Department before you submit.

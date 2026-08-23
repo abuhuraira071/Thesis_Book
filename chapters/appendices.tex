@@ -1,0 +1,220 @@
+% ==========================================================================
+% APPENDICES
+%
+% Appendix A: Hyperparameter Search and MSFT-Net Component-Addition Study
+% Appendix B: Dataset Statistics and Record-Disjoint Partition Details
+%
+% Appendices are lettered A, B, C ... and their figures and tables are
+% numbered A.1, A.2, B.1 and so on. The \appendix command below does this
+% automatically.
+% ==========================================================================
+
+\appendix
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Appendices}
+
+
+% ==========================================================================
+\chapter{Hyperparameter Tuning and Ablation Study Results}
+\label{app:hyperparameter}
+% ==========================================================================
+
+This appendix documents the model-selection experiments behind the final
+inter-patient configuration: the hyperparameter search space explored for
+MSFT-Net and the component-addition study that justified its two auxiliary
+components. The twelve-arm ablation of the hybrid model referenced in
+Section~\ref{subsec:ablation} is reported in Table~\ref{tab:ablation} of
+Chapter~\ref{ch:results} and is not repeated here. All results in this
+appendix are under the inter-patient protocol; the best configuration is
+reported in Chapter~\ref{ch:results}.
+
+
+\section{Search Grid}
+\label{app:search_grid}
+
+Table~\ref{tab:grid} defines the search space from which 240 configurations
+were sampled during the random search; the best value found for each
+hyperparameter is listed.
+
+\begin{table}[!t]
+\centering
+\caption{Hyperparameter search grid for the inter-patient protocol.}
+\label{tab:grid}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Hyperparameter} & \textbf{Values} & \textbf{Best} \\
+\midrule
+Learning rate       & $\{10^{-2},\; 10^{-3},\; 10^{-4}\}$
+                    & $10^{-3}$ \\
+Batch size          & $\{32,\; 64,\; 128\}$
+                    & 64 \\
+Stem filters        & $\{16,\; 24,\; 32\}$
+                    & 32 \\
+SE ratio            & $\{4,\; 8,\; 16\}$
+                    & 8 \\
+Dropout rate        & $\{0.2,\; 0.3,\; 0.4\}$
+                    & 0.3 \\
+FiLM conditioning   & \{on,\; off\}
+                    & on \\
+RR-interval features & \{on,\; off\}
+                    & on \\
+Weight decay ($L_2$) & $\{0,\; 10^{-5},\; 10^{-4}\}$
+                    & $10^{-5}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{MSFT-Net Component-Addition Study}
+\label{app:ablation}
+
+The FiLM conditioning and RR-interval features of MSFT-Net were selected
+through a factorial component study. Starting from a baseline without
+either component, each configuration enables one or both, and every
+configuration was retrained and evaluated on the frozen inter-patient test
+partition. The resulting macro-$F_1$ values are reported in
+Table~\ref{tab:msft_addition}; each component contributes a substantial
+gain on its own, and their combination is super-additive, reaching the 87.25\% macro-$F_1$ of the final MSFT-Net
+(Tables~\ref{tab:perclass} and~\ref{tab:headtohead}). Per-class sensitivities and positive
+predictivities for this final model are given with their Wilson confidence
+intervals in Table~\ref{tab:ec57}.
+
+\begin{table}[!t]
+\centering
+\caption{Effect of FiLM conditioning and RR-interval features in MSFT-Net (macro-$F_1$, inter-patient test partition)}
+\label{tab:msft_addition}
+\begin{tabular}{@{}llr@{}}
+\toprule
+\textbf{Arm} & \textbf{Configuration} & \textbf{Macro-$F_1$ (\%)} \\
+\midrule
+1 & Baseline (no FiLM, no RR) & 79.32 \\
+2 & FiLM only                 & 82.15 \\
+3 & RR features only          & 83.89 \\
+4 & Both (full MSFT-Net)      & 87.25 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ==========================================================================
+\chapter{Dataset Statistics and Partition Details}
+\label{app:dataset}
+% ==========================================================================
+
+This appendix provides the complete database-level statistics for all
+three PhysioNet databases used in this thesis, the exact
+record-disjoint partition lists, and the class distribution per
+partition.
+
+
+\section{Database Overview}
+\label{app:db_overview}
+
+Table~\ref{tab:db_stats} summarises the source databases, their
+sampling rates, record counts, and total duration.
+
+\begin{table}[!t]
+\centering
+\caption{Source database statistics.}
+\label{tab:db_stats}
+\begin{tabular}{@{}lrrrc@{}}
+\toprule
+\textbf{Database} & \textbf{Records} & \textbf{Fs (Hz)} & \textbf{Total Beats} & \textbf{Duration} \\
+\midrule
+MIT-BIH Arrhythmia   & 48  & 360 & 109,494 & 30.5 h \\
+MIT-BIH NSR          & 18  & 128 &  18,266 & 42.8 h \\
+BIDMC CHF            & 15  & 250 &  15,330 & 36.0 h \\
+\midrule
+\textbf{Total}       & \textbf{81} & --- & \textbf{143,090} & \textbf{109.3 h} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Record-Disjoint Partition Lists}
+\label{app:partitions}
+
+The de~Chazal-style DS1/DS2 partition is applied only to the MIT-BIH
+records. NSR and CHF records are split by record with no overlap
+between partitions.
+
+\subsection{MIT-BIH Arrhythmia Database}
+
+\begin{table}[!t]
+\centering
+\caption{MIT-BIH record-disjoint partition (de~Chazal).}
+\label{tab:mitbih_partition}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Partition} & \textbf{Record Numbers} \\
+\midrule
+DS1 -- Train & 101, 106, 108, 109, 112, 114, 115, 116, 118, 119, \\
+             & 122, 124, 201, 203, 205, 207, 209, 102, 208, 104, \\
+             & 107 \\
+DS1 -- Val   & 215, 220, 223, 230 \\
+DS2 -- Test  & 100, 103, 105, 111, 113, 117, 121, 123, 200, 202, \\
+             & 210, 212, 213, 214, 219, 221, 222, 228, 231, 232, \\
+             & 233, 234, 217 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Records 102, 104, and 107 are paced records retained in DS1 for training
+regularisation only; record 217 is the single held-out paced record in DS2
+and supplies the entire $Q$-class test support of Table~\ref{tab:dataset}.
+Consistent with Section~\ref{subsec:dataset}, paced beats contribute to the
+$Q$ class only and are never scored as N/S/V/F.
+
+\subsection{MIT-BIH Normal Sinus Rhythm Database}
+
+\begin{table}[!t]
+\centering
+\caption{NSR record partition.}
+\label{tab:nsr_partition}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Partition} & \textbf{Record Numbers} \\
+\midrule
+Train  & nsr001--nsr012 (12 records) \\
+Val    & nsr013--nsr015 (3 records)  \\
+Test   & nsr016--nsr018 (3 records)  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{BIDMC Congestive Heart Failure Database}
+
+\begin{table}[!t]
+\centering
+\caption{CHF record partition.}
+\label{tab:chf_partition}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Partition} & \textbf{Record Numbers} \\
+\midrule
+Train  & chf001--chf009 (9 records)   \\
+Val    & chf010--chf012 (3 records)   \\
+Test   & chf013--chf015 (3 records)   \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Class Distribution per Partition}
+\label{app:class_dist}
+
+The beat-level class distributions for each partition are reported in the
+main body and are not repeated here: Table~\ref{tab:dataset} gives the
+five-class inter-patient composition (train/validation/test), and
+Table~\ref{tab:intra_data} gives the six-category intra-patient corpus from
+raw extraction through capping to the SMOTE-balanced training set. The
+corpus is severely imbalanced -- before quota sampling and balancing,
+normal beats outnumber fusion beats by roughly 19:1 (15{,}306 vs.~802
+beats) -- which motivated the three-way comparison of imbalance strategies
+in Section~\ref{sec:workflow}. As the ablation of
+Section~\ref{subsec:ablation} shows, training-only minority augmentation
+with no global re-weighting was found to be the best strategy under the
+record-disjoint protocol; class weighting and SMOTE were tested and
+rejected.

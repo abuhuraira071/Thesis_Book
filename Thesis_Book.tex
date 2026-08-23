@@ -1,0 +1,123 @@
+% ==========================================================================
+%  RUET -- DEPARTMENT OF ELECTRICAL & ELECTRONIC ENGINEERING
+%  Project & Thesis (EEE 4000) LaTeX Template
+%
+%  HOW TO USE THIS FILE
+%  --------------------
+%  1. Open  config.tex  and fill in your name, roll, title, supervisor, etc.
+%  2. Write your thesis in the files inside the  chapters/  folder.
+%  3. Compile with:      tectonic Thesis_Book.tex
+%     (or)   xelatex Thesis_Book / bibtex Thesis_Book / xelatex Thesis_Book x2
+%
+%  You normally do NOT need to change anything in this file. It only decides
+%  the ORDER of the pages. All formatting lives in  format.tex .
+%
+%  Read README.md for a full beginner's guide.
+% ==========================================================================
+
+% 12 pt body text, A4 paper, single-sided book (required by the EEE manual).
+\documentclass[12pt,a4paper,oneside]{report}
+
+% ----- Your personal information (EDIT THIS FILE) -------------------------
+\input{config}
+
+% ----- Official EEE formatting rules (margins, font, spacing, headings) ---
+\input{format}
+
+
+\begin{document}
+
+% ==========================================================================
+% PRELIMINARY PAGES
+% --------------------------------------------------------------------------
+% The cover page has NO page number.
+% Everything from the Acknowledgement to the List of Publications is
+% numbered with Roman numerals (i, ii, iii, ...).
+% ==========================================================================
+
+% ----- Cover page --------------------------------------------------------
+% Roman numbering starts on the cover, but the cover shows no number, so the
+% Acknowledgement comes out as page ii -- exactly as in Annex III.
+\pagenumbering{roman}
+\setcounter{page}{1}
+\input{chapters/cover}
+
+\input{chapters/acknowledgement}
+\input{chapters/certificate_supervisor}
+\input{chapters/certificate_external}
+\input{chapters/abstract}
+
+% ----- Automatically generated lists --------------------------------------
+% These three are built by LaTeX from your chapters. Never type them by hand.
+% They appear only after you compile the document twice.
+\tableofcontents
+\clearpage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+\clearpage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+\clearpage
+
+% ----- Lists you write by hand --------------------------------------------
+% No \clearpage here: \listoftables already ends mid-page or at a page
+% boundary, and the \chapter* inside \prelimchapter (used by abbreviations,
+% symbols, publications below) forces its own fresh page. A \clearpage here
+% previously produced a stray blank page before "List of Abbreviations".
+\input{chapters/abbreviations}
+\input{chapters/symbols}
+% \input{chapters/publications}   % uncomment when you have publications
+
+
+% ==========================================================================
+% MAIN BODY
+% --------------------------------------------------------------------------
+% Arabic page numbering (1, 2, 3, ...) restarts here automatically.
+% The EEE manual specifies SIX chapters. Keep all six.
+% ==========================================================================
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{chapters/chapter1_introduction}
+\input{chapters/chapter2_methodology}
+\input{chapters/chapter3_results_discussion}
+\input{chapters/chapter4_social_environmental_influence}
+\input{chapters/chapter5_po_cep_cea}
+\input{chapters/chapter6_conclusion_future_plan}
+
+
+% ==========================================================================
+% REFERENCES
+% --------------------------------------------------------------------------
+% EEE requirement: references must strictly follow the IEEE format.
+% The entries themselves live in  bibliography.bib .
+% Cite them in the text with \cite{key} -- only cited works are printed.
+% ==========================================================================
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{IEEEtran}
+% \hbadness is raised only inside the reference list: IEEEtran wraps long
+% corporate author names (e.g. "Association for the Advancement of Medical
+% Instrumentation") in braces that TeX refuses to hyphenate, which can leave
+% one or two slightly loose lines. Rewriting the bibliographic data itself is
+% not an option, so the cosmetic warning is silenced for this environment.
+{\hbadness=10000
+\bibliography{bibliography}}
+
+
+% ==========================================================================
+% APPENDICES
+% --------------------------------------------------------------------------
+% Optional. The EEE manual allows an appendix when necessary (long code,
+% datasheets, extra derivations, large tables, ...).
+% ==========================================================================
+\input{chapters/appendices}
+
+
+\end{document}

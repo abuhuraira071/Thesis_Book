@@ -1,0 +1,16 @@
+# LaTeX build artefacts
+*.aux
+*.log
+*.toc
+*.lof
+*.lot
+*.out
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.xdv
+*.synctex.gz
+
+# Tectonic build cache
+.latex-build/

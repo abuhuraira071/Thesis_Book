@@ -1,0 +1,56 @@
+% ==========================================================================
+% SUPERVISOR CERTIFICATE  (Annex III, Annex page 8)
+%
+% Layout from the manual:
+%   motto + RUET logo at the top
+%   Department and University, 16 pt bold
+%   heading "CERTIFICATE", 16 pt bold, centred
+%   certifying paragraph (wording below is the manual's)
+%   "Thesis Supervisor:" label, dotted signature line, then the details
+%
+% All names come from config.tex -- including both authors, if the project
+% has more than one student.
+% ==========================================================================
+
+\clearpage
+\thispagestyle{fancy}
+\phantomsection
+\addcontentsline{toc}{chapter}{Certificate (Supervisor)}
+
+\begin{center}
+{\fontsize{11}{13}\selectfont \universitymotto}\\[4pt]
+\ruetlogobwbox{0.85in}\\[8pt]
+{\fontsize{16}{19}\selectfont \textbf{\departmentname}}\\[2pt]
+{\fontsize{16}{19}\selectfont \textbf{\universityname}}
+\end{center}
+
+\vspace{0.5in}
+
+\begin{center}
+{\fontsize{16}{19}\selectfont \textbf{CERTIFICATE}}
+\end{center}
+
+\vspace{0.15in}
+
+This is to certify that the \MakeLowercase{\worktype} entitled
+\textbf{``\thesistitle''} by \studentname\ (Roll No. \studentroll) and
+\studentnametwo\ (Roll No. \studentrolltwo), has been
+carried out under my supervision. To the best of my knowledge, this
+\MakeLowercase{\worktype} is an original one and has not been submitted
+anywhere for any Degree or Diploma.
+
+\vspace{0.9in}
+
+\noindent\textbf{Thesis Supervisor:}
+
+\vspace{0.35in}
+
+\noindent
+\signaturedots\\
+\textbf{\supervisorname}\\
+\supervisordesignation\\
+\supervisordepartment\\
+\supervisoruniversity\\
+\universitylocation
+
+\clearpage

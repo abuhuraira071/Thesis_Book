@@ -1,0 +1,137 @@
+% ==========================================================================
+% CHAPTER 6 -- CONCLUSION AND FUTURE PLAN
+% ==========================================================================
+
+\chapter{Conclusion and Future Plan}
+\label{ch:conclusion}
+
+This chapter closes the book. Section~\ref{sec:ch6_conclusion} restates the
+problem and the contribution of the work, Section~\ref{sec:limitations}
+states honestly what the work does not cover, and Section~\ref{sec:future}
+proposes specific next steps.
+
+
+\section{Conclusion}
+\label{sec:ch6_conclusion}
+
+The problem addressed by this thesis was the unreliable and often inflated
+reporting of ECG arrhythmia classification performance, combined with the
+difficulty of running accurate classifiers on the small microcontrollers
+found in wearable monitors. To answer it, a
+hybrid CNN--BiLSTM--attention model and a lightweight multi-scale
+feature-augmented network (MSFT-Net) were designed, trained, and compared
+under a strictly record-disjoint, inter-patient partition of the MIT-BIH
+data, following the ANSI/AAMI EC57 class grouping.
+
+Each objective of Section~\ref{sec:objectives} was met. The first
+objective, designing the two architectures with rhythm, morphological, and
+template-similarity auxiliary features, was achieved in
+Chapter~\ref{ch:methodology}: MSFT-Net (167{,}090 parameters) attained
+89.45\% accuracy and 87.25\% macro-$F_1$ under the inter-patient protocol,
+significantly outperforming the 3.4$\times$ larger recurrent hybrid
+(82.00\% accuracy, 73.26\% macro-$F_1$, $p \approx 0$ by McNemar test),
+while the same architecture family reached 98.59\% accuracy under the
+permissive intra-patient six-category protocol. The second objective, honest
+evaluation under both protocols with statistical significance testing, was
+met in Chapter~\ref{ch:results}, and it produced the central finding of the
+thesis: the evaluation protocol changes the reported performance by roughly
+nine to ten points and even reverses the architectural conclusion, since
+the recurrent stage helps under the subject-mixed split but actively harms
+inter-patient generalisation. The third objective, component analysis and
+faithful explainability, was met by the twelve-arm ablation, which showed
+that the auxiliary feature vector is the engine of the model (removing it
+costs 0.2819 macro-$F_1$) and that the attribution maps, while plausibly
+localised to the QRS complex, fail the deletion-curve faithfulness test and
+must be treated as qualitative. The fourth objective, INT8 deployment on an
+STM32 microcontroller, was met with a measured per-beat inference latency
+of 185.057~ms, a 288.16~KB model occupying 56.28\% of flash and 75.97\% of
+RAM, and the full inter-patient accuracy preserved on-device.
+
+The contribution of this work is threefold: (i) a protocol-correct,
+statistically disciplined evaluation of two competing ECG classification
+architectures under identical splits, quantifying for the first time in a
+single controlled study how much apparent performance is a by-product of
+the assessment regime; (ii) a compact, feature-augmented convolutional
+architecture (MSFT-Net) with a staged, evidence-based treatment of the
+resistant fusion class; and (iii) a demonstrated deployment path from
+deep learning model to real-time INT8 inference on actual
+microcontroller hardware, with measured rather than asserted
+deployability.
+
+
+\section{Limitations}
+\label{sec:limitations}
+
+The following limitations qualify the conclusions above.
+
+First, the $Q$ class rests on very few patients: its test support is a
+single held-out paced record, so its sensitivity and positive predictivity
+are de facto single-patient statistics whose real uncertainty is the
+between-patient spread, not the nominal binomial confidence intervals.
+Second, the CHF category of the intra-patient study comprises ECG segments
+derived from a database that
+reflects only hospitalised patients with congestive heart failure, recorded
+at a different sampling frequency than the arrhythmia database; the
+source-database probe confirmed a learnable database fingerprint in the
+integrated corpus, so the near-perfect separation of the CHF-derived
+category under the
+intra-patient protocol must not be interpreted as a cardiac-morphology
+finding or as evidence of a clinically generalisable CHF signature. Third, robustness was measured only with synthesised Gaussian
+noise and simulated baseline wander; this is not equal to validation on an
+independently collected ambulatory recording, so the level of real-world
+sensor and motion artefact to which the results generalise is untested.
+Fourth, the latency of the smallest MCU model (Table~\ref{tab:mcu}) was
+characterised on a general-purpose host, not on target embedded hardware,
+so its timing reflects the computational footprint rather than a
+demonstration of real-time on-device operation; the full-accuracy MSFT-Net
+was, however, profiled directly on the STM32. Fifth, both architectures
+were evaluated on data from a few public databases and a single
+record-disjoint partition; a completely out-of-hospital patient population
+would be a more rigorous test of generalisation than any within-database
+split can provide. Finally, the calibration and decision-threshold
+experiment showed that thresholds tuned on the validation partition do not
+transfer to the test partition, so any operating-point tuning performed for
+deployment must be verified on data from a more representative deployment
+population than an internal split can provide.
+
+
+\section{Future Plan}
+\label{sec:future}
+
+Several concrete next steps follow from the limitations above:
+
+\begin{enumerate}
+  \item Extend the evaluation to an external, independently collected
+        ambulatory cohort (for example a wearable single-lead database), so
+        that the robustness and generalisation claims are validated on real
+        sensor and motion artefacts rather than synthetic corruption.
+  \item Increase the $Q$-class support by adding more paced records from
+        other public databases, so that the between-patient statistics of
+        the $Q$ class become meaningful rather than single-patient.
+  \item Improve the faithfulness of the attribution maps by training with
+        explanation objectives (for example attention or saliency
+        regularisation), and re-test with deletion curves and
+        intersection-over-union against cardiologist-annotated intervals.
+  \item Investigate the hypothesis, raised by the reversal of the
+        recurrent-stage benefit between protocols, that recurrent
+        architectures trained on multi-subject data preferentially learn
+        patient-identity-correlated temporal structure, for example by
+        probing the learned recurrent representations for patient identity.
+  \item Add on-device probability calibration with abstention so the
+        wearable can withhold low-confidence classifications instead of
+        emitting unreliable decisions, and validate the chosen operating
+        point on a deployment-representative population.
+  \item Extend the deployment work to continuous multi-hour operation on
+        the STM32 (real-time acquisition, buffering, and communication
+        stacks alongside inference), and measure battery life and power
+        consumption in a wearable form factor.
+  \item Retrain the pipeline on multi-lead and 12-lead data and on
+        additional arrhythmia classes beyond the five AAMI classes, to move
+        the system towards broader clinical screening coverage.
+\end{enumerate}
+
+These steps are the natural continuation of the work: each one follows
+directly from a limitation identified in Section~\ref{sec:limitations} or
+from a finding of Chapter~\ref{ch:results}, and together they outline the
+path from the present prototype to a clinically validated, wearable cardiac
+monitoring system.
