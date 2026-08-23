@@ -92,8 +92,13 @@ square brackets in your final PDF, you are not finished.
 ### With Tectonic (recommended — one command, no LaTeX installation)
 
 ```bash
-tectonic Thesis_Book.tex
+./build.sh              # or:  tectonic Thesis_Book.tex
 ```
+
+`build.sh` is the safest way to compile: it uses Tectonic when available,
+falls back to the full XeLaTeX + BibTeX four-pass sequence otherwise, and
+fails loudly if any reference or citation is left unresolved. It also has a
+`clean` mode (`./build.sh clean`) for removing auxiliary files.
 
 Tectonic downloads whatever packages it needs on first run, and it runs
 LaTeX and BibTeX as many times as required, so the table of contents and the
@@ -370,13 +375,18 @@ sentence of the writing must be your own.
 
 ## 9. Troubleshooting
 
+Most of the issues below can no longer happen if you compile with
+`./build.sh`, which always runs every pass needed and checks the result.
+
 **"Font Times New Roman not found"** — you will not see this error; the
 template falls back automatically. See §4.
 
 **References show as `[?]`** — you did not run BibTeX, or you did not run
-XeLaTeX twice afterwards. Use the four-command sequence in §3.
+XeLaTeX twice afterwards. Use `./build.sh`, which never leaves this state
+behind.
 
-**Contents shows the wrong page numbers** — same cause. Compile again.
+**Contents shows the wrong page numbers** — same cause. `./build.sh` reruns
+TeX until the `.toc` is stable.
 
 **`IEEEtran.bst not found`** — your LaTeX installation is missing the
 `IEEEtran` package. On TeX Live: `tlmgr install IEEEtran`. On MiKTeX it
@@ -389,3 +399,9 @@ to force a position; it creates large ugly gaps.
 
 **The logo is missing** — check that `assets/ruet_logo_color.png` still
 exists and that the path in `config.tex` matches.
+
+**"Font Times New Roman not found" warnings during build** — lines like
+`warning: accessing absolute path /usr/share/fonts/...; build may not be
+reproducible` are printed by Tectonic while scanning your system fonts.
+They are harmless, do not affect the PDF, and can be hidden with
+`./build.sh` (it already silences them on the Tectonic route).
